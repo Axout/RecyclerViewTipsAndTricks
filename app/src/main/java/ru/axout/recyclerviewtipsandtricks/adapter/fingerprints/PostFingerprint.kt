@@ -42,6 +42,9 @@ class PostViewHolder(
     binding: ItemPostBinding
 ) : BaseViewHolder<ItemPostBinding, UserPost>(binding) {
 
+    // ЭТО СЛАБОЕ МЕСТО
+    // При скролле метод onBind() будет постоянно вызываться, и, соответственно, все внутренние функции тоже.
+    // А метод onBind() должен быть быстрым. Поэтому внутренние методы нужно вынести наружу.
     override fun onBind(item: UserPost) {
         Timber.d("tag: onBind")
         with(binding) {
