@@ -40,4 +40,5 @@ dependencies {
 
     implementation "androidx.recyclerview:recyclerview:1.2.1"
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.5.6'
 }
