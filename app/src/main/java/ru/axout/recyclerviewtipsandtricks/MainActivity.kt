@@ -9,6 +9,7 @@ import ru.axout.recyclerviewtipsandtricks.adapter.fingerprints.PostFingerprint
 import ru.axout.recyclerviewtipsandtricks.adapter.fingerprints.TitleFingerprint
 import ru.axout.recyclerviewtipsandtricks.databinding.ActivityMainBinding
 import ru.axout.recyclerviewtipsandtricks.utils.getRandomFeed
+import timber.log.Timber
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
@@ -17,6 +18,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        Timber.d("Hello timber")
 
         adapter = FingerprintAdapter(getFingerprints())
 
