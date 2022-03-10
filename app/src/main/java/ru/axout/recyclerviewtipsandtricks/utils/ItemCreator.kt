@@ -5,7 +5,7 @@ import ru.axout.recyclerviewtipsandtricks.model.FeedTitle
 import ru.axout.recyclerviewtipsandtricks.model.UserPost
 import kotlin.random.Random
 
-fun getRandomFeed() = List(20) {
+fun getRandomFeed() = List(2) {
     when (it) {
         0 -> FeedTitle("Актуальное за сегодня:")
         else -> getRandomUserPost()

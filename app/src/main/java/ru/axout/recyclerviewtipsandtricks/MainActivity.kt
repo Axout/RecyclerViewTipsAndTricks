@@ -3,8 +3,11 @@ package ru.axout.recyclerviewtipsandtricks
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewbinding.ViewBinding
 import by.kirich1409.viewbindingdelegate.viewBinding
 import ru.axout.recyclerviewtipsandtricks.adapter.FingerprintAdapter
+import ru.axout.recyclerviewtipsandtricks.adapter.Item
+import ru.axout.recyclerviewtipsandtricks.adapter.ItemFingerprint
 import ru.axout.recyclerviewtipsandtricks.adapter.fingerprints.PostFingerprint
 import ru.axout.recyclerviewtipsandtricks.adapter.fingerprints.TitleFingerprint
 import ru.axout.recyclerviewtipsandtricks.databinding.ActivityMainBinding
@@ -19,7 +22,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        Timber.d("Hello timber")
+        Timber.d("tag: onCreate")
 
         adapter = FingerprintAdapter(getFingerprints())
 
@@ -31,8 +34,11 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         adapter.setItems(getRandomFeed())
     }
 
-    private fun getFingerprints() = listOf(
-        TitleFingerprint(),
-        PostFingerprint()
-    )
+    private fun getFingerprints() :  List<ItemFingerprint<out ViewBinding, out Item>> {
+        Timber.d("tag: getFingerprints")
+        return listOf(
+            TitleFingerprint(),
+            PostFingerprint()
+        )
+    }
 }
