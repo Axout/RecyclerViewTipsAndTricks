@@ -32,6 +32,7 @@ class FingerprintAdapter(
         return size
     }
 
+    // метод возвращает ID лейаута элемента, например: R.layout.item_title или R.layout.item_post
     override fun getItemViewType(position: Int): Int {
         val item = items[position]
         Timber.d("tag: getItemViewType")
