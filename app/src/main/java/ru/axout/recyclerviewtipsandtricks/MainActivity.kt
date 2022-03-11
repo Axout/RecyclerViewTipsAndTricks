@@ -32,6 +32,10 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = this@MainActivity.adapter
 
+            // первое решение, чтоб не бликал вью при перерисовке - это:
+            // itemAnimator = null
+            // второе решение - использовать payload. Лучше, так как оставляет анимацию
+
             addItemDecoration(FeedHorizontalDividerItemDecoration(70))
             addItemDecoration(GroupVerticalItemDecoration(R.layout.item_post, 100, 0))
             addItemDecoration(GroupVerticalItemDecoration(R.layout.item_title, 0, 100))
