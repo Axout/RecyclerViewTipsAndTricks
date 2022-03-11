@@ -37,6 +37,9 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             addItemDecoration(GroupVerticalItemDecoration(R.layout.item_title, 0, 100))
         }
 
+        // СЛАБОЕ МЕСТО
+        // Вызов setItems() происходит на Main thread.
+        // Решение -> ListAdapter
         adapter.setItems(feed)
     }
 
