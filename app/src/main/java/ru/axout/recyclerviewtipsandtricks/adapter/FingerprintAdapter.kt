@@ -32,6 +32,9 @@ class FingerprintAdapter(
             ?: throw IllegalArgumentException("View type not found: $item")
     }
 
+    // СЛАБОЕ МЕСТО
+    // Нужно избавляться от notifyDataSetChanged() по понятным причинам)
+    // Решение - diffUtil
     fun setItems(newItems: List<Item>) {
         items.clear()
         items.addAll(newItems)
