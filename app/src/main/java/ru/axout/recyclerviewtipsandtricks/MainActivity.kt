@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             adapter = this@MainActivity.adapter
         }
 
-        adapter.setItems(getRandomFeed())
+        adapter.setItems(getRandomFeed(this))
     }
 
     private fun getFingerprints() = listOf(
