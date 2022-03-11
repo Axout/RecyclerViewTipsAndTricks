@@ -2,8 +2,10 @@ package ru.axout.recyclerviewtipsandtricks
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.google.android.material.snackbar.Snackbar
 import ru.axout.recyclerviewtipsandtricks.adapter.FingerprintAdapter
 import ru.axout.recyclerviewtipsandtricks.adapter.Item
 import ru.axout.recyclerviewtipsandtricks.adapter.animations.AddableItemAnimator
@@ -16,6 +18,7 @@ import ru.axout.recyclerviewtipsandtricks.adapter.fingerprints.PostFingerprint
 import ru.axout.recyclerviewtipsandtricks.adapter.fingerprints.TitleFingerprint
 import ru.axout.recyclerviewtipsandtricks.databinding.ActivityMainBinding
 import ru.axout.recyclerviewtipsandtricks.model.UserPost
+import ru.axout.recyclerviewtipsandtricks.utils.SwipeToDelete
 import ru.axout.recyclerviewtipsandtricks.utils.getRandomFeed
 import timber.log.Timber
 
@@ -48,6 +51,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             }
         }
 
+        initSwipeToDelete()
         submitInitialListWithDelayForAnimation()
     }
 
@@ -69,5 +73,26 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         binding.recyclerView.postDelayed({
             adapter.submitList(feed.toList())
         }, 300L)
+    }
+
+    private fun initSwipeToDelete() {
+        val onItemSwipedToDelete = { positionForRemove: Int ->
+            val removedItem = feed[positionForRemove]
+            feed.removeAt(positionForRemove)
+            adapter.submitList(feed.toList())
+
+            showRestoreItemSnackbar(positionForRemove, removedItem)
+
+        }
+        val swipeToDeleteCallback = SwipeToDelete(onItemSwipedToDelete)
+        ItemTouchHelper(swipeToDeleteCallback).attachToRecyclerView(binding.recyclerView)
+    }
+
+    private fun showRestoreItemSnackbar(position: Int, item: Item) {
+        Snackbar.make(binding.recyclerView, "Item was deleted", Snackbar.LENGTH_LONG)
+            .setAction("Undo") {
+                feed.add(position, item)
+                adapter.submitList(feed.toList())
+            }.show()
     }
 }
