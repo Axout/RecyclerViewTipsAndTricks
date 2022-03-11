@@ -6,6 +6,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import ru.axout.recyclerviewtipsandtricks.adapter.FingerprintAdapter
 import ru.axout.recyclerviewtipsandtricks.adapter.Item
+import ru.axout.recyclerviewtipsandtricks.adapter.animations.AddableItemAnimator
+import ru.axout.recyclerviewtipsandtricks.adapter.animations.custom.SimpleCommonAnimator
+import ru.axout.recyclerviewtipsandtricks.adapter.animations.custom.SlideInLeftCommonAnimator
+import ru.axout.recyclerviewtipsandtricks.adapter.animations.custom.SlideInTopCommonAnimator
 import ru.axout.recyclerviewtipsandtricks.adapter.decorations.FeedHorizontalDividerItemDecoration
 import ru.axout.recyclerviewtipsandtricks.adapter.decorations.GroupVerticalItemDecoration
 import ru.axout.recyclerviewtipsandtricks.adapter.fingerprints.PostFingerprint
@@ -32,16 +36,19 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = this@MainActivity.adapter
 
-            // первое решение, чтоб не бликал вью при перерисовке - это:
-            // itemAnimator = null
-            // второе решение - использовать payload. Лучше, так как оставляет анимацию
-
             addItemDecoration(FeedHorizontalDividerItemDecoration(70))
             addItemDecoration(GroupVerticalItemDecoration(R.layout.item_post, 100, 0))
             addItemDecoration(GroupVerticalItemDecoration(R.layout.item_title, 0, 100))
+
+            itemAnimator = AddableItemAnimator(SimpleCommonAnimator()).also { animator ->
+                animator.addViewTypeAnimation(R.layout.item_post, SlideInLeftCommonAnimator())
+                animator.addViewTypeAnimation(R.layout.item_title, SlideInTopCommonAnimator())
+                animator.addDuration = 500L
+                animator.removeDuration = 500L
+            }
         }
 
-        adapter.submitList(feed.toList())
+        submitInitialListWithDelayForAnimation()
     }
 
     private fun getFingerprints() = listOf(
@@ -56,5 +63,11 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         feed.removeAt(postIndex)
         feed.add(postIndex, newItem)
         adapter.submitList(feed.toList())
+    }
+
+    private fun submitInitialListWithDelayForAnimation() {
+        binding.recyclerView.postDelayed({
+            adapter.submitList(feed.toList())
+        }, 300L)
     }
 }
