@@ -1,13 +1,8 @@
 package ru.axout.recyclerviewtipsandtricks.adapter.fingerprints
 
-import android.graphics.Typeface
-import android.text.Spannable
-import android.text.SpannableStringBuilder
-import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.core.content.ContextCompat
 import ru.axout.recyclerviewtipsandtricks.R
 import ru.axout.recyclerviewtipsandtricks.adapter.BaseViewHolder
 import ru.axout.recyclerviewtipsandtricks.adapter.Item
