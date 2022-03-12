@@ -2,6 +2,7 @@ package ru.axout.recyclerviewtipsandtricks
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -17,27 +18,42 @@ import ru.axout.recyclerviewtipsandtricks.adapter.decorations.GroupVerticalItemD
 import ru.axout.recyclerviewtipsandtricks.adapter.fingerprints.PostFingerprint
 import ru.axout.recyclerviewtipsandtricks.adapter.fingerprints.TitleFingerprint
 import ru.axout.recyclerviewtipsandtricks.databinding.ActivityMainBinding
+import ru.axout.recyclerviewtipsandtricks.model.FeedTitle
 import ru.axout.recyclerviewtipsandtricks.model.UserPost
 import ru.axout.recyclerviewtipsandtricks.utils.SwipeToDelete
-import ru.axout.recyclerviewtipsandtricks.utils.getRandomFeed
+import ru.axout.recyclerviewtipsandtricks.utils.getRandomUserPost
 import timber.log.Timber
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     private val binding by viewBinding(ActivityMainBinding::bind)
-    private lateinit var adapter: FingerprintAdapter
-    private val feed: MutableList<Item> by lazy(LazyThreadSafetyMode.NONE) { getRandomFeed(this) }
+
+    private val titlesList: MutableList<Item> by lazy {
+        MutableList(1) { FeedTitle("Актуальное за сегодня:") }
+    }
+    private val postsList: MutableList<Item> by lazy {
+        MutableList(20) { getRandomUserPost(this) }
+    }
+
+    private val titleAdapter = FingerprintAdapter(listOf(TitleFingerprint()))
+    private val postAdapter = FingerprintAdapter(listOf(PostFingerprint(::onSavePost)))
+
+    private val concatAdapter = ConcatAdapter(
+        ConcatAdapter.Config.Builder()
+            .setIsolateViewTypes(false)
+            .build(),
+        titleAdapter,
+        postAdapter
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         Timber.d("Hello timber")
 
-        adapter = FingerprintAdapter(getFingerprints())
-
         with(binding.recyclerView) {
             layoutManager = LinearLayoutManager(this@MainActivity)
-            adapter = this@MainActivity.adapter
+            adapter = concatAdapter
 
             addItemDecoration(FeedHorizontalDividerItemDecoration(70))
             addItemDecoration(GroupVerticalItemDecoration(R.layout.item_post, 100, 0))
@@ -55,31 +71,27 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         submitInitialListWithDelayForAnimation()
     }
 
-    private fun getFingerprints() = listOf(
-        TitleFingerprint(),
-        PostFingerprint(::onSavePost)
-    )
-
     private fun onSavePost(post: UserPost) {
-        val postIndex = feed.indexOf(post)
+        val postIndex = postsList.indexOf(post)
         val newItem = post.copy(isSaved = post.isSaved.not())
 
-        feed.removeAt(postIndex)
-        feed.add(postIndex, newItem)
-        adapter.submitList(feed.toList())
+        postsList.removeAt(postIndex)
+        postsList.add(postIndex, newItem)
+        postAdapter.submitList(postsList.toList())
     }
 
     private fun submitInitialListWithDelayForAnimation() {
         binding.recyclerView.postDelayed({
-            adapter.submitList(feed.toList())
+            titleAdapter.submitList(titlesList.toList())
+            postAdapter.submitList(postsList.toList())
         }, 300L)
     }
 
     private fun initSwipeToDelete() {
         val onItemSwipedToDelete = { positionForRemove: Int ->
-            val removedItem = feed[positionForRemove]
-            feed.removeAt(positionForRemove)
-            adapter.submitList(feed.toList())
+            val removedItem = postsList[positionForRemove]
+            postsList.removeAt(positionForRemove)
+            postAdapter.submitList(postsList.toList())
 
             showRestoreItemSnackbar(positionForRemove, removedItem)
 
@@ -91,8 +103,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private fun showRestoreItemSnackbar(position: Int, item: Item) {
         Snackbar.make(binding.recyclerView, "Item was deleted", Snackbar.LENGTH_LONG)
             .setAction("Undo") {
-                feed.add(position, item)
-                adapter.submitList(feed.toList())
+                postsList.add(position, item)
+                postAdapter.submitList(postsList.toList())
             }.show()
     }
 }
