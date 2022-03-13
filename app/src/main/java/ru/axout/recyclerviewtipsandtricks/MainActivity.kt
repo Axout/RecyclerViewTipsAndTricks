@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         listOf(
             PostFingerprint(::onSavePost),
             HorizontalItemsFingerprint(
-                listOf(PostFingerprint(::onSavePost)),
+                listOf(PostFingerprint(::onSavePost, 600)),
                 70
             )
         )
