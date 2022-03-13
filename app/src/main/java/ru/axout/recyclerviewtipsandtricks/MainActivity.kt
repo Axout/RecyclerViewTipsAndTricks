@@ -44,7 +44,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             PostFingerprint(::onSavePost),
             HorizontalItemsFingerprint(
                 listOf(PostFingerprint(::onSavePost, 600)),
-                70
+                70,
+                RecyclerView.RecycledViewPool()
             )
         )
     )

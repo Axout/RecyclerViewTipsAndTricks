@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import ru.axout.recyclerviewtipsandtricks.R
 import ru.axout.recyclerviewtipsandtricks.adapter.BaseViewHolder
 import ru.axout.recyclerviewtipsandtricks.adapter.FingerprintAdapter
@@ -18,6 +19,7 @@ import ru.axout.recyclerviewtipsandtricks.model.HorizontalItems
 class HorizontalItemsFingerprint(
     private val fingerprintsList: List<ItemFingerprint<*, *>>,
     private val outerDivider: Int,
+    private val viewPool: RecyclerView.RecycledViewPool
 ) : ItemFingerprint<ItemHorizontalListBinding, HorizontalItems> {
 
     override fun isRelativeItem(item: Item) = item is HorizontalItems
@@ -29,7 +31,7 @@ class HorizontalItemsFingerprint(
         parent: ViewGroup
     ): BaseViewHolder<ItemHorizontalListBinding, HorizontalItems> {
         val binding = ItemHorizontalListBinding.inflate(layoutInflater)
-        return HorizontalItemsHolder(binding, fingerprintsList, outerDivider)
+        return HorizontalItemsHolder(binding, fingerprintsList, viewPool, outerDivider)
     }
 
     override fun getDiffUtil() = diffUtil
@@ -47,7 +49,8 @@ class HorizontalItemsFingerprint(
 class HorizontalItemsHolder(
     binding: ItemHorizontalListBinding,
     fingerprints: List<ItemFingerprint<*, *>>,
-    outerDivider: Int,
+    viewPool: RecyclerView.RecycledViewPool,
+    outerDivider: Int
 ) : BaseViewHolder<ItemHorizontalListBinding, HorizontalItems>(binding) {
 
     private val fingerprintAdapter = FingerprintAdapter(fingerprints)
@@ -55,7 +58,10 @@ class HorizontalItemsHolder(
     init {
         with(binding.rvHorizontalItems) {
             adapter = fingerprintAdapter
-            layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+            layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false).also {
+                it.initialPrefetchItemCount = 4 // по-дефолту = 2
+            }
+            setRecycledViewPool(viewPool)
             addItemDecoration(HorizontalDividerDecoration(50, outerDivider))
         }
     }
