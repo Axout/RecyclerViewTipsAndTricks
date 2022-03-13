@@ -24,7 +24,6 @@ import ru.axout.recyclerviewtipsandtricks.model.FeedTitle
 import ru.axout.recyclerviewtipsandtricks.model.UserPost
 import ru.axout.recyclerviewtipsandtricks.utils.SwipeToDelete
 import ru.axout.recyclerviewtipsandtricks.utils.getRandomFeed
-import ru.axout.recyclerviewtipsandtricks.utils.getRandomUserPost
 import timber.log.Timber
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {

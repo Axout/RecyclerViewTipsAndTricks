@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import ru.axout.recyclerviewtipsandtricks.R
 import ru.axout.recyclerviewtipsandtricks.adapter.BaseViewHolder
 import ru.axout.recyclerviewtipsandtricks.adapter.FingerprintAdapter

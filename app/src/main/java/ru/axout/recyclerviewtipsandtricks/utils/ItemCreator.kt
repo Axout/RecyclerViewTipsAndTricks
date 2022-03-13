@@ -7,7 +7,6 @@ import android.text.SpannableStringBuilder
 import android.text.style.StyleSpan
 import androidx.core.content.ContextCompat
 import ru.axout.recyclerviewtipsandtricks.R
-import ru.axout.recyclerviewtipsandtricks.model.FeedTitle
 import ru.axout.recyclerviewtipsandtricks.model.HorizontalItems
 import ru.axout.recyclerviewtipsandtricks.model.UserPost
 import kotlin.random.Random
