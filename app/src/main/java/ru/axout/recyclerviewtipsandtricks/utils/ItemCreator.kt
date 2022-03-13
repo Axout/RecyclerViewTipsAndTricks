@@ -8,15 +8,20 @@ import android.text.style.StyleSpan
 import androidx.core.content.ContextCompat
 import ru.axout.recyclerviewtipsandtricks.R
 import ru.axout.recyclerviewtipsandtricks.model.FeedTitle
+import ru.axout.recyclerviewtipsandtricks.model.HorizontalItems
 import ru.axout.recyclerviewtipsandtricks.model.UserPost
 import kotlin.random.Random
 
 fun getRandomFeed(context: Context) = MutableList(20) {
     when (it) {
-        0 -> FeedTitle("Актуальное за сегодня:")
+        1, 6, 7 -> getRandomHorizontalItems(context)
         else -> getRandomUserPost(context)
     }
 }
+
+fun getRandomHorizontalItems(context: Context) = HorizontalItems(
+    List(10) { getRandomUserPost(context) }
+)
 
 fun getRandomUserPost(context: Context) = UserPost(
     postId = Random.nextLong(),
