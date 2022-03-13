@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.android.material.snackbar.Snackbar
 import ru.axout.recyclerviewtipsandtricks.adapter.FingerprintAdapter
@@ -77,6 +78,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             }
         }
 
+        postAdapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT
+
         initSwipeToDelete()
         submitInitialListWithDelayForAnimation()
     }
@@ -94,6 +97,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         binding.recyclerView.postDelayed({
             titleAdapter.submitList(titlesList.toList())
             postAdapter.submitList(postsList.toList())
+            postAdapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.ALLOW
         }, 300L)
     }
 
